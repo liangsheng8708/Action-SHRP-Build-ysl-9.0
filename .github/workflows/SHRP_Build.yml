@@ -69,7 +69,7 @@ jobs:
         run: |
           export ALLOW_MISSING_DEPENDENCIES=true
           . build/envsetup.sh
-          lunch omni_${{ github.event.inputs.Device_Name }}-eng
+          lunch ${{ github.event.inputs.Device_Name }}
           make recoveryimage
       - name: Upload to Release...
         uses: ncipollo/release-action@v1.8.0
