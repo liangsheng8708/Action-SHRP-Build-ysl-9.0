@@ -70,7 +70,7 @@ jobs:
         run: |
           cd shrp
           export ALLOW_MISSING_DEPENDENCIES=true
-          . build/envsetup.sh
+          source build/envsetup.sh
           lunch omni_${{ github.event.inputs.DeviceTree_Name }}-eng
           make recoveryimage
       - name: Upload to Release...
