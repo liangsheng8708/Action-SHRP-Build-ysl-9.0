@@ -29,20 +29,6 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Get the source code of this repositorie...
-        uses: actions/checkout@main
-      - name: Get variable configuration...
-        run: |
-          echo "BUILD_TIME=$(date +%s | md5sum | awk '{print substr($1,1,10)}')" >> $GITHUB_ENV
-      - name: Clean up the environment...
-        run: |
-          docker rmi `docker images -q`
-          sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
-          sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
-          sudo -E apt-get update
-          sudo -E apt-get -y autoremove --purge
-          sudo -E apt-get clean
-          df -h
       - name: Configuration Environment...
         run: |
           sudo apt update
@@ -69,9 +55,10 @@ jobs:
       - name: make recovery...
         run: |
           cd shrp
-          export ALLOW_MISSING_DEPENDENCIES=true
           source build/envsetup.sh
           lunch omni_${{ github.event.inputs.DeviceTree_Name }}-eng
+          export ALLOW_MISSING_DEPENDENCIES=true
+          export LC_ALL="C"
           make recoveryimage
       - name: Upload to Release...
         uses: ncipollo/release-action@v1.8.0
