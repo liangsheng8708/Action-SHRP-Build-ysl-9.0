@@ -64,9 +64,11 @@ jobs:
           repo sync
       - name: Download the Tree...
         run: |
+          cd shrp
           git clone ${{ github.event.inputs.DeviceTree_URL }} ${{ github.event.inputs.DeviceTree_Path }}
       - name: make recovery...
         run: |
+          cd shrp
           export ALLOW_MISSING_DEPENDENCIES=true
           . build/envsetup.sh
           lunch omni_${{ github.event.inputs.DeviceTree_Name }}-eng
