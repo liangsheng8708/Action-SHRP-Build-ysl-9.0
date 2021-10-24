@@ -1,0 +1,79 @@
+name: SGSI_Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      DeviceTree_Name:
+        description: 'DeviceTree_Name'
+        required: true
+        default: 'ysl'
+      DeviceTree_URL:
+        description: 'DeviceTree_URL'
+        required: true
+        default: ''
+      DeviceTree_Path:
+        description: 'DeviceTree_Path'
+        required: true
+        default: 'device/xiaomi/ysl'
+      REPACK_NAME:
+        description: 'REPACK_NAME'
+        required: true
+        default: 'SHRP_v3.1_stable-Unofficial_ysl-liangsheng8708-20211024.zip'
+
+
+
+
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Get the source code of this repositorie...
+        uses: actions/checkout@main
+      - name: Get variable configuration...
+        run: |
+          echo "BUILD_TIME=$(date +%s | md5sum | awk '{print substr($1,1,10)}')" >> $GITHUB_ENV
+      - name: Clean up the environment...
+        run: |
+          docker rmi `docker images -q`
+          sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
+          sudo -E apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
+          sudo -E apt-get update
+          sudo -E apt-get -y autoremove --purge
+          sudo -E apt-get clean
+          df -h
+      - name: Configuration Environment...
+        run: |
+          sudo apt update
+          sudo apt install bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev git
+      - name: Download the repo...
+        run: |
+          mkdir -p ~/bin
+          curl https://mirrors.tuna.tsinghua.edu.cn/git/git-repo > ~/bin/repo
+          sudo cp ~/bin/repo /bin/repo
+          sudo chmod a+x /bin/repo
+      - name: Settings Github account...
+        run: |
+          git config --global user.name "liangsheng8708"
+          git config --global user.email "1933153216@qq.com"
+      - name: Download the Git...
+        run: |
+          mkdir shrp && cd shrp
+          repo init --depth=1 -u git://github.com/SHRP/platform_manifest_twrp_omni.git -b v3_9.0
+          repo sync
+      - name: Download the Tree...
+        run: |
+          git clone ${{ github.event.inputs.DeviceTree_URL }} ${{ github.event.inputs.DeviceTree_Path }}
+      - name: make recovery...
+        run: |
+          export ALLOW_MISSING_DEPENDENCIES=true
+          . build/envsetup.sh
+          lunch omni_${{ github.event.inputs.Device_Name }}-eng
+          make recoveryimage
+      - name: Upload to Release...
+        uses: ncipollo/release-action@v1.8.0
+        with:
+          artifacts: "${{ github.workspace }}/shrp/out/target/product/SHRP_*"
+          tag: "${{ github.event.inputs.REPACK_NAME }}_${{ env.BUILD_TIME }}"
+          token: ${{ secrets.GITHUB_TOKEN }}
