@@ -11,6 +11,14 @@ on:
         description: 'DeviceTree_URL'
         required: true
         default: ''
+      Git_UserName:
+        description: 'Git_UserName'
+        required: true
+        default: 'liangsheng8708'
+      Git_UserEmail:
+        description: '1933153216@qq.com'
+        required: true
+        default: ''
       DeviceTree_Path:
         description: 'DeviceTree_Path'
         required: true
@@ -46,8 +54,8 @@ jobs:
           sudo chmod a+x /bin/repo
       - name: Settings Github account...
         run: |
-          git config --global user.name "liangsheng8708"
-          git config --global user.email "1933153216@qq.com"
+          git config --global user.name "${{ github.event.inputs.UserName }}"
+          git config --global user.email "${{ github.event.inputs.UserEmail }}"
       - name: Download the Git...
         run: |
           mkdir shrp && cd shrp
@@ -59,15 +67,18 @@ jobs:
           git clone ${{ github.event.inputs.DeviceTree_URL }} ${{ github.event.inputs.DeviceTree_Path }}
       - name: make recovery...
         run: |
+          PATH=~/bin:$PATH
           cd shrp
-          source build/envsetup.sh
-          lunch omni_${{ github.event.inputs.DeviceTree_Name }}-eng
+          tree ./device
           export ALLOW_MISSING_DEPENDENCIES=true
-          export LC_ALL="C"
-          make recoveryimage
+          source build/envsetup.sh
+          lunch omni_${{ github.event.inputs.DeviceTree_Name }}-eng 
+          make clean
+          make recoveryimage -j$(nproc --all)   
       - name: Upload to Release...
         uses: ncipollo/release-action@v1.8.0
         with:
           artifacts: "${{ github.workspace }}/shrp/out/target/product/SHRP_*"
           tag: "${{ github.event.inputs.REPACK_NAME }}_${{ env.BUILD_TIME }}"
           token: ${{ secrets.GITHUB_TOKEN }}
+          body: SHRP Recovery built by ${{ github.event.inputs.UserName }}
