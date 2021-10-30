@@ -54,8 +54,8 @@ jobs:
           sudo chmod a+x /bin/repo
       - name: Settings Github account...
         run: |
-          git config --global user.name "${{ github.event.inputs.UserName }}"
-          git config --global user.email "${{ github.event.inputs.UserEmail }}"
+          git config --global user.name "${{ github.event.inputs.Git_UserName }}"
+          git config --global user.email "${{ github.event.inputs.Git_UserEmail }}"
       - name: Download the Git...
         run: |
           mkdir shrp && cd shrp
@@ -81,4 +81,4 @@ jobs:
           artifacts: "${{ github.workspace }}/shrp/out/target/product/SHRP_*"
           tag: "${{ github.event.inputs.REPACK_NAME }}_${{ env.BUILD_TIME }}"
           token: ${{ secrets.GITHUB_TOKEN }}
-          body: SHRP Recovery built by ${{ github.event.inputs.UserName }}
+          body: SHRP Recovery built by ${{ github.event.inputs.Git_UserName }}
