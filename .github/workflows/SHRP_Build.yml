@@ -82,7 +82,7 @@ jobs:
       - name: Upload to Release...
         uses: ncipollo/release-action@v1.8.0
         with:
-          artifacts: "${{ github.workspace }}/shrp/out/target/product/SHRP_*"
+          artifacts: "${{ github.workspace }}/shrp/out/target/product/${{ github.event.inputs.DeviceTree_Name }}/SHRP_*"
           tag: "${{ github.event.inputs.REPACK_NAME }}_${{ env.BUILD_TIME }}"
           token: ${{ secrets.GITHUB_TOKEN }}
           body: SHRP Recovery built by ${{ github.event.inputs.Git_UserName }}
