@@ -16,9 +16,9 @@ on:
         required: true
         default: 'liangsheng8708'
       Git_UserEmail:
-        description: '1933153216@qq.com'
+        description: 'Git_UserEmail'
         required: true
-        default: ''
+        default: '1933153216@qq.com'
       DeviceTree_Path:
         description: 'DeviceTree_Path'
         required: true
