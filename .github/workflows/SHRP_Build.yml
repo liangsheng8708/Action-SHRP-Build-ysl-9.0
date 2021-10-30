@@ -26,7 +26,7 @@ on:
       REPACK_NAME:
         description: 'REPACK_NAME'
         required: true
-        default: 'SHRP_v3.1_stable-Unofficial_ysl-liangsheng8708-20211024.zip'
+        default: 'SHRP_v3.1_stable-Unofficial_ysl-liangsheng8708-20211030.zip'
 
 
 
