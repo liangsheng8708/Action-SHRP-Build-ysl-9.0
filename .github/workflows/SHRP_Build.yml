@@ -68,6 +68,7 @@ jobs:
       - name: Download the Tree...
         run: |
           cd shrp
+          echo "<project path="${{ github.event.inputs.DeviceTree_Path }}" name="liangsheng8708/SHRP_device_xiaomi_vela" remote="github" revision="master" />" >> .repo/manifest.xml
           git clone ${{ github.event.inputs.DeviceTree_URL }} ${{ github.event.inputs.DeviceTree_Path }}
       - name: make recovery...
         run: |
