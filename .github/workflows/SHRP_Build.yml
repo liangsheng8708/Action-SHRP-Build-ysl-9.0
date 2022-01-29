@@ -80,11 +80,11 @@ jobs:
           lunch omni_${{ github.event.inputs.DeviceTree_Name }}-eng 
           make clean
           make recoveryimage -j$(nproc --all)   
-          ls -al ./out/target/product/${{ github.event.inputs.DeviceTree_Path }}/ >> ${{ github.workspace }}/shrp/reconery_info.txt
+          ls -al ./out/target/product/${{ github.event.inputs.DeviceTree_Name }}/ >> ${{ github.workspace }}/shrp/reconery_info.txt
       - name: Upload to Release...
         uses: ncipollo/release-action@v1.8.0
         with:
-          artifacts: "${{ github.workspace }}/shrp/out/target/product/${{ github.event.inputs.DeviceTree_Path }}/*.zip"
+          artifacts: "${{ github.workspace }}/shrp/out/target/product/${{ github.event.inputs.DeviceTree_Name }}/*.zip"
           tag: "${{ github.event.inputs.REPACK_NAME }}_${{ env.BUILD_TIME }}"
           bodyFile: "${{ github.workspace }}/shrp/reconery_info.txt"
           token: ${{ secrets.GITHUB_TOKEN }}
