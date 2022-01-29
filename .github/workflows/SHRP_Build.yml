@@ -11,14 +11,10 @@ on:
         description: 'DeviceTree_URL'
         required: true
         default: ''
-      Git_UserName:
-        description: 'Git_UserName'
+      Repository_branches:
+        description: 'Repository_branches'
         required: true
-        default: 'liangsheng8708'
-      Git_UserEmail:
-        description: 'Git_UserEmail'
-        required: true
-        default: '1933153216@qq.com'
+        default: 'v3_9.0'
       DeviceTree_Path:
         description: 'DeviceTree_Path'
         required: true
@@ -58,12 +54,12 @@ jobs:
           sudo chmod a+x /bin/repo
       - name: Settings Github account...
         run: |
-          git config --global user.name "${{ github.event.inputs.Git_UserName }}"
-          git config --global user.email "${{ github.event.inputs.Git_UserEmail }}"
+          git config --global user.name "liangsheng8708"
+          git config --global user.email "1933153216@qq.com"
       - name: Download the Git...
         run: |
           mkdir shrp && cd shrp
-          repo init --depth=1 -u git://github.com/SHRP/platform_manifest_twrp_omni.git -b v3_9.0
+          repo init --depth=1 -u git://github.com/SHRP/platform_manifest_twrp_omni.git -b ${{ Repository_branches }}
           repo sync
       - name: Download the Tree...
         run: |
@@ -80,7 +76,7 @@ jobs:
           lunch omni_${{ github.event.inputs.DeviceTree_Name }}-eng 
           make clean
           make recoveryimage -j$(nproc --all)   
-          ls -al ./out/target/product/${{ github.event.inputs.DeviceTree_Name }}/ >> ${{ github.workspace }}/shrp/reconery_info.txt
+          ls -al ./out/target/product/${{ github.event.inputs.DeviceTree_Name }}/*.zip >> ${{ github.workspace }}/shrp/reconery_info.txt
       - name: Upload to Release...
         uses: ncipollo/release-action@v1.8.0
         with:
