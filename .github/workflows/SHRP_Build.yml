@@ -11,8 +11,8 @@ on:
         description: 'DeviceTree_URL'
         required: true
         default: ''
-      Repository_branches:
-        description: 'Repository_branches'
+      Branches:
+        description: 'Branches'
         required: true
         default: 'v3_9.0'
       DeviceTree_Path:
@@ -59,7 +59,7 @@ jobs:
       - name: Download the Git...
         run: |
           mkdir shrp && cd shrp
-          repo init --depth=1 -u git://github.com/SHRP/platform_manifest_twrp_omni.git -b ${{ Repository_branches }}
+          repo init --depth=1 -u git://github.com/SHRP/platform_manifest_twrp_omni.git -b ${{ github.event.inputs.Branches }}
           repo sync
       - name: Download the Tree...
         run: |
