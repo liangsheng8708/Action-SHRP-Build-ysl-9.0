@@ -61,13 +61,13 @@ jobs:
           mkdir shrp && cd shrp
           repo init --depth=1 -u https://github.com/SHRP/platform_manifest_twrp_omni.git -b ${{ github.event.inputs.Branches }}
           repo sync
-      - name: Download the Tree...
+      - name: Download Vendor Tree...
         if: ${{ github.event.inputs.Branches }} == "v3_11.0" 
         run: |
           cd shrp
           rm -rf ./vendor/omni
-          git clone -u https://github.com/omnirom/android_vendor_omni.git -b android-11 ./vendor/omni
-      - name: Download the Tree...
+          git clone https://github.com/omnirom/android_vendor_omni.git -b android-11 ./vendor/omni
+      - name: Download Device Tree...
         run: |
           cd shrp
           echo "<project path="${{ github.event.inputs.DeviceTree_Path }}" name="liangsheng8708/SHRP_device_xiaomi_vela" remote="github" revision="master" />" >> .repo/manifest.xml
