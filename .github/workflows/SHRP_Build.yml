@@ -62,7 +62,7 @@ jobs:
           repo init --depth=1 -u https://github.com/SHRP/platform_manifest_twrp_omni.git -b ${{ github.event.inputs.Branches }}
           repo sync
       - name: Download the Tree...
-        if: github.event.inputs.Branches == "v3_11.0" 
+        if: ${{ github.event.inputs.Branches }} == "v3_11.0" 
         run: |
           cd shrp
           rm -rf ./vendor/omni
