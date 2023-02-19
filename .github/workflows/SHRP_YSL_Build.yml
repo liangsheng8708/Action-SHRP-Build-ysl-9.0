@@ -1,4 +1,4 @@
-name: SHRP_Build
+name: SHRP_YSL_Build
 
 on:
   workflow_dispatch:
