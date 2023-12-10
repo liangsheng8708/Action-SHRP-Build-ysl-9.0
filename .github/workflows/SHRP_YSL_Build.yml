@@ -10,7 +10,7 @@ on:
       DeviceTree_URL:
         description: 'DeviceTree_URL'
         required: true
-        default: 'https://github.com/liangsheng8708/android_device_xiaomi_ysl_shrp.git'
+        default: 'https://github.com/liangsheng8708/Device_xiaomi_ysl.git'
       Branches:
         description: 'Branches'
         required: true
@@ -22,7 +22,7 @@ on:
       REPACK_NAME:
         description: 'REPACK_NAME'
         required: true
-        default: '20230130'
+        default: ''
 
 
 
